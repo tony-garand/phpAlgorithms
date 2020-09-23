@@ -1,0 +1,62 @@
+<?php
+//
+/** @var \Wheelhouse\Product\Block\TierPricing */
+//
+// Displays the lowest and Current tier price to users
+//
+// Current 2D associative Array from $product->getData('tier_price')
+//
+// Array
+// (
+//     [0] => Array
+//         (
+//             [price_id] => 56772
+//             [website_id] => 0
+//             [all_groups] => 0
+//             [cust_group] => 23
+//             [price] => 8.210000
+//             [price_qty] => 1.0000
+//             [percentage_value] =>
+//             [website_price] => 8.210000
+//         )
+
+
+function WhTierPrice($block){
+    // get data from block
+    $data = array();
+    $data = $block->getWhTierPrice();
+    // Prints array data
+    // print("<pre>".print_r($data,true)."</pre>");
+
+
+    // Create empty array to transfer values to
+    $prices = array();
+    // Iterate over the $data array
+    foreach($data as $row){
+        // Iterate over the $inner array
+        foreach($row as $key => $value){
+            // Extract price value and push into our empty price array
+            if ($key == 'price'){
+                array_push($prices, $value);
+            }
+        }
+    }
+    // print("<pre>".print_r($prices,true)."</pre>");
+    //find the min value in prices
+    $minArrPrice = min($prices);
+
+    // if product has advanced pricing format and display
+    if ($minArrPrice > 0) {
+        //Format for currency
+        $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+        $lowestPrice = $formatter->formatCurrency($minArrPrice, 'USD');
+
+        // Echo Value
+        echo '<div class="as-low-as"><span class="price">As low as '.$lowestPrice.'</span></div>';
+    }
+
+};
+
+WhTierPrice($block);
+
+?>
