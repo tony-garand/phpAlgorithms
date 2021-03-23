@@ -1,4 +1,4 @@
-</php
+<?php
 // filter function for $_array
 function filter_by_value($array, $index, $value){
     foreach(array_keys($array) as $key){
